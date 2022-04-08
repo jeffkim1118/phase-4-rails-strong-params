@@ -8,7 +8,8 @@ class BirdsController < ApplicationController
 
   # POST /birds
   def create
-    bird = Bird.create(name: params[:name], species: params[:species])
+    # bird = Bird.create(name: params[:name], species: params[:species])
+    bird = Bird.create(bird_params)
     render json: bird, status: :created
   end
 
@@ -22,4 +23,15 @@ class BirdsController < ApplicationController
     end
   end
 
+  def destroy
+    @bird = Bird.find_by(id: params[:id])
+    @bird.destroy!
+    redirect_to '/patients/new', :notice => "Your bird has been deleted"
+  end
+
+  private
+
+  def bird_params
+    params.permit(:name, :species)
+  end
 end
